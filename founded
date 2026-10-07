@@ -1,0 +1,31 @@
+local Players = game:GetService("Players")
+local InsertService = game:GetService("InsertService")
+
+local CROWN_ASSET_ID = 10159600649
+
+local function equipCrown(character)
+	local success, model = pcall(function()
+		return InsertService:LoadAsset(CROWN_ASSET_ID)
+	end)
+
+	if not success or not model then
+		warn("Gagal memuat 8-Bit Royal Crown:", model)
+		return
+	end
+
+	local accessory = model:FindFirstChildWhichIsA("Accessory", true)
+
+	if accessory then
+		accessory.Parent = character
+	else
+		warn("Accessory tidak ditemukan di asset crown.")
+	end
+
+	model:Destroy()
+end
+
+Players.PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(function(character)
+		equipCrown(character)
+	end)
+end)
